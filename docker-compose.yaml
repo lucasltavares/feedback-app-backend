@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  feedback-app-db:
+    image: postgres
+    shm_size: 128mb
+    container_name: feedback-app-db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=feedback_app
+    volumes:
+      - feedback_data:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - feedback-app-network
+    restart: always
+
+volumes:
+  feedback_data:
+    driver: local
+
+networks:
+  feedback-app-network:
+    driver: bridge
