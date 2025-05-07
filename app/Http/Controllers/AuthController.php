@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -49,5 +51,41 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out',
         ], 200);
+    }
+
+    public function redirect()
+    {
+        $url = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        return Response::json(['url' => $url]);
+    }
+
+    public function callback()
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+
+        $finduser = User::where('email', $user->email)->first();
+        // If user already exists return the user.
+        if ($finduser) {
+            $token = $finduser->createToken('main');
+            $token->accessToken->expires_at = now()->addDays(1);
+            $token->accessToken->save();
+            return response()->json([
+                'user' => $finduser,
+                'token' => $token->plainTextToken,
+            ]);
+        // If user does not exist create a new user.
+        } else {
+            $newUser = User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+            ]);
+            $token = $newUser->createToken('main');
+            $token->accessToken->expires_at = now()->addDays(1);
+            $token->accessToken->save();
+            return response()->json([
+                'user' => $newUser,
+                'token' => $token->plainTextToken,
+            ]);
+        }
     }
 }

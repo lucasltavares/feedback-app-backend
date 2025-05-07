@@ -2,20 +2,49 @@ version: '3.8'
 
 services:
   feedback-app-db:
-    image: postgres
-    shm_size: 128mb
+    image: postgres:17
     container_name: feedback-app-db
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=feedback_app
-    volumes:
-      - feedback_data:/var/lib/postgresql/data
     ports:
       - 5433:5432
+    volumes:
+      - feedback_data:/var/lib/postgresql/data
     networks:
       - feedback-app-network
-    restart: always
+
+  feedback-app-laravel:
+    image: php:8.3-cli
+    container_name: feedback-app-laravel
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=feedback-app-db
+      - DB_PORT=5432
+      - DB_DATABASE=feedback_app
+      - DB_USERNAME=admin
+      - DB_PASSWORD=123
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - feedback-app-db
+    networks:
+      - feedback-app-network
+    command: >
+      bash -c "
+      apt-get update &&
+      apt-get install -y git unzip libpq-dev &&
+      curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&
+      docker-php-ext-install pdo pdo_pgsql pgsql &&
+      composer install &&
+      php artisan key:generate &&
+      php artisan migrate &&
+      php artisan serve --host=0.0.0.0 --port=8000
+      "
 
 volumes:
   feedback_data:

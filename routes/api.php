@@ -3,21 +3,20 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Middleware\EnsureApiAuthenticated;
-use Illuminate\Support\Facades\Response;
-use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/auth/redirect', function () {
-    $url = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
-    return Response::json(['url' => $url]);
+// Authorization routes
+Route::prefix('/auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/google/redirect', [AuthController::class, 'redirect']);
+    Route::get('/google/callback', [AuthController::class, 'callback']);
 });
 
+// Protected routes
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
