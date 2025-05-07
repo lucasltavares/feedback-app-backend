@@ -8,7 +8,10 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Authorization routes
+/**
+ * Public routes
+ * Prefix: /auth
+ */
 Route::prefix('/auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -16,7 +19,14 @@ Route::prefix('/auth')->group(function () {
     Route::get('/google/callback', [AuthController::class, 'callback']);
 });
 
-// Protected routes
+/**
+ * Private routes
+ * Middleware: auth:sanctum
+ */
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    /** Logout route */
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    /** Business routes */
+    
 });
