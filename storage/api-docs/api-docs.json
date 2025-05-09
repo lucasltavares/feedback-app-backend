@@ -1,0 +1,32 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Feedback app API",
+        "description": "Documentação da API feita com Laravel e L5-Swagger",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/businesses": {
+            "get": {
+                "summary": "List all Businesses",
+                "operationId": "7123a3e6abeab779b8460888ff15e0fb",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/api/posts": {
+            "get": {
+                "summary": "List all posts",
+                "operationId": "fb5b5cc79257134948247a2e0a010afa",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        }
+    }
+}

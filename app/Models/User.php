@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'business_id'
     ];
 
     /**
@@ -45,5 +46,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /** @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     * App\Models\Business
+     */
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
     }
 }
