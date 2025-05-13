@@ -34,4 +34,9 @@ class Business extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function feedback()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

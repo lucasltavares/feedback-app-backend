@@ -28,5 +28,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     /** Business routes */
-    
+    Route::get('/feedbacks', [App\Http\Controllers\FeedbackController::class, 'index']);
+    Route::get('/feedbacks/{id}', [App\Http\Controllers\FeedbackController::class, 'show']);
+    Route::post('/feedbacks', [App\Http\Controllers\FeedbackController::class, 'store']);
+    Route::put('/feedbacks/{id}', [App\Http\Controllers\FeedbackController::class, 'update']);
+    Route::delete('/feedbacks/{id}', [App\Http\Controllers\FeedbackController::class, 'destroy']);
 });

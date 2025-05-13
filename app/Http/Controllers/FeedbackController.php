@@ -35,7 +35,14 @@ class FeedbackController extends Controller
 
     public function store(Request $request)
     {
-        $feedback = Feedback::create($request->all());
+        $feedback = Feedback::create([
+            'business_id' => $request->user()->business_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'message' => $request->message,
+        ]);
+
         return Response::json(['feedback' => $feedback], 201);
     }
 
