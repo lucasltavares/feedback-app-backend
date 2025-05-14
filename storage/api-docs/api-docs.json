@@ -8,25 +8,516 @@
     "paths": {
         "/api/businesses": {
             "get": {
-                "summary": "List all Businesses",
+                "tags": [
+                    "business"
+                ],
+                "summary": "List all businesses",
+                "description": "Returns a list of all businesses",
                 "operationId": "7123a3e6abeab779b8460888ff15e0fb",
                 "responses": {
                     "200": {
                         "description": "Successful operation"
                     }
-                }
-            }
-        },
-        "/api/posts": {
-            "get": {
-                "summary": "List all posts",
-                "operationId": "fb5b5cc79257134948247a2e0a010afa",
+                },
+                "security": [
+                    {
+                        "auth:sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "business"
+                ],
+                "summary": "Create a new business",
+                "description": "Creates a new business",
+                "operationId": "4533b15ef840def2c9ceb555a2bd66d2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the business",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Address of the business",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "Phone number of the business",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "422": {
+                        "description": "Validation errors"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "auth:sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/businesses/{id}": {
+            "get": {
+                "tags": [
+                    "business"
+                ],
+                "summary": "Get business by ID",
+                "description": "Returns the business with the specified ID",
+                "operationId": "fa4803adef18582b4d9e6728b83d6ca2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the business",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Business not found"
+                    }
+                },
+                "security": [
+                    {
+                        "auth:sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "business"
+                ],
+                "summary": "Update business by ID",
+                "description": "Updates the business with the specified ID",
+                "operationId": "d7697dd0261e3a4a072e3ba3cab52fbd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the business",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the business",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Address of the business",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "description": "Phone number of the business",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Business not found"
+                    }
+                },
+                "security": [
+                    {
+                        "auth:sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "business"
+                ],
+                "summary": "Delete business by ID",
+                "description": "Deletes the business with the specified ID",
+                "operationId": "5c158f0548ed580056aa06d26fd8a0a1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the business",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Business not found"
+                    }
+                },
+                "security": [
+                    {
+                        "auth:sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/feedbacks": {
+            "get": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Lista todos os feedbacks do negócio autenticado",
+                "description": "Retorna uma lista de todos os feedbacks associados ao negócio do usuário autenticado.",
+                "operationId": "listFeedbacks",
+                "responses": {
+                    "200": {
+                        "description": "Lista de feedbacks retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "feedbacks": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "format": "uuid",
+                                                        "example": "c1234567-89ab-4cde-8f01-23456789abcd"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Maria Oliveira"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "format": "email",
+                                                        "example": "maria@example.com"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Ambiente limpo e organizado."
+                                                    },
+                                                    "rating": {
+                                                        "type": "integer",
+                                                        "format": "int32",
+                                                        "example": 4
+                                                    },
+                                                    "business_id": {
+                                                        "type": "string",
+                                                        "format": "uuid"
+                                                    },
+                                                    "customer_id": {
+                                                        "type": "string",
+                                                        "format": "uuid"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Cria um novo feedback",
+                "description": "Cria um novo feedback pertencente ao negócio autenticado.",
+                "operationId": "storeFeedback",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "João da Silva"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "joao@example.com"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Ótimo serviço."
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "example": 5
+                                    },
+                                    "business_id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    },
+                                    "customer_id": {
+                                        "type": "string",
+                                        "format": "uuid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Feedback criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "feedback": {
+                                            "$ref": "/app/Models/Feedback.php"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/feedbacks/{id}": {
+            "get": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Exibe um feedback específico",
+                "description": "Retorna os detalhes de um feedback pertencente ao negócio autenticado.",
+                "operationId": "showFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do feedback a ser exibido",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback encontrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "feedback": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "uuid",
+                                                    "example": "c1234567-89ab-4cde-8f01-23456789abcd"
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "João da Silva"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "joao@example.com"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Ótimo serviço."
+                                                },
+                                                "rating": {
+                                                    "type": "integer",
+                                                    "format": "int32",
+                                                    "example": 5
+                                                },
+                                                "business_id": {
+                                                    "type": "string",
+                                                    "format": "uuid"
+                                                },
+                                                "customer_id": {
+                                                    "type": "string",
+                                                    "format": "uuid"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Feedback não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Feedback not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Exclui um feedback",
+                "description": "Exclui um feedback pertencente ao negócio autenticado.",
+                "operationId": "destroyFeedback",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do feedback a ser excluído",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Feedback excluído com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "feedback": {
+                                            "$ref": "/app/Models/Feedback.php"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Feedback não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Feedback not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "business",
+            "description": "business"
+        },
+        {
+            "name": "Feedback",
+            "description": "Feedback"
+        }
+    ]
 }
